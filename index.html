@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        *{
+            box-sizing: border-box;
+            padding: 0;
+            margin: 0;
+        }
+        body{
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(to right, aquamarine, lightgray);
+        }
+        .score{
+          background: whitesmoke;
+          padding: 20px;
+          border-radius: 5px;
+          display: flex;
+          flex-direction: column;
+          width: fit-content;
+          margin: 20px auto;
+          visibility: hidden;
+          transition: visibility 1s linear;
+        }
+        .container{
+            width: 50%;
+            background: whitesmoke;
+            margin: 20px auto 0;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, .5);
+            padding: 15px 25px;
+        }
+        @media (max-width:767px){
+         .container{
+            width: 95%;
+           padding: 10px 15px;
+         }
+
+        }
+        .container h1{
+            color: darkblue;
+            border-bottom: 1px solid gray;
+            padding-bottom: 10px;
+        }
+        .container .quistion{
+            list-style: none;
+        }
+         .container .quistion li{
+            margin: 20px 0;
+            transition: all 1s linear;
+        }
+       .container .quistion li:first-child{
+        color: blue;
+        font-weight: bold;
+       }
+       .container .quistion li:not(:first-child){
+        font-size: 18px;
+        border: 2px solid gray;
+        border-radius: 4px;
+        padding: 10px 5px;
+        transition: all .3s linear;
+        cursor: pointer;
+       }
+        .container .quistion li:not(:first-child):hover{
+        border-color: gold;
+        }
+        .nextBtn{
+            background: darkblue;
+            font-weight: bold;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 25px;
+            cursor: pointer;
+            display: block;
+            margin: 0 auto;
+        }
+        .correct{
+            background: darkgreen;
+            border-color: darkgreen;
+            color: white;
+        }
+        .incorrect{
+           background: darkred;
+            border-color: darkred;
+            color: white;
+        }
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="score">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <div class="container">
+        <h1>Simple Quiz</h1>
+        <ul class="quistion">
+            <li>1. Which of the following is NOT a eukaryotic microorganism?</li>
+            <li>Fungi</li>
+            <li>Protozoa</li>
+            <li>Bacteria</li>
+            <li>Algae</li>
+        </ul>
+        <button class="nextBtn">NEXT</button>
+    </div>
+    <script>
+
+        const questions = [
+  {
+    question: "Which of the following is NOT a eukaryotic microorganism?",
+    a: "Fungi",
+    b: "Protozoa",
+    c: "Bacteria",
+    d: "Algae",
+    correct: "c"
+  },
+  {
+    question: "The Gram stain differentiates bacteria based on what?",
+    a: "Cell size",
+    b: "Flagella presence",
+    c: "Cell wall structure",
+    d: "Capsule thickness",
+    correct: "c"
+  },
+  {
+    question: "Who discovered penicillin?",
+    a: "Robert Koch",
+    b: "Alexander Fleming",
+    c: "Joseph Lister",
+    d: "Edward Jenner",
+    correct: "b"
+  },
+  {
+    question: "What is the genetic material of HIV?",
+    a: "Single-stranded RNA",
+    b: "Double-stranded RNA",
+    c: "Single-stranded DNA",
+    d: "Double-stranded DNA",
+    correct: "a"
+  },
+  {
+    question: "Which organelle is absent in prokaryotes?",
+    a: "Ribosome",
+    b: "Cell membrane",
+    c: "Nucleus",
+    d: "Cytoplasm",
+    correct: "c"
+  },
+  {
+    question: "Which bacterial structure is responsible for motility?",
+    a: "Pili",
+    b: "Capsule",
+    c: "Flagella",
+    d: "Fimbriae",
+    correct: "c"
+  },
+  {
+    question: "What color does a Gram-positive bacterium appear after staining?",
+    a: "Pink",
+    b: "Green",
+    c: "Purple",
+    d: "Red",
+    correct: "c"
+  },
+  {
+    question: "Which of these is an obligate intracellular parasite?",
+    a: "Bacteria",
+    b: "Fungus",
+    c: "Virus",
+    d: "Algae",
+    correct: "c"
+  },
+  {
+    question: "What component is unique to bacterial cell walls?",
+    a: "Cellulose",
+    b: "Chitin",
+    c: "Peptidoglycan",
+    d: "Lignin",
+    correct: "c"
+  },
+  {
+    question: "Which of the following is used for bacterial conjugation?",
+    a: "Flagella",
+    b: "Sex pilus",
+    c: "Capsule",
+    d: "Fimbriae",
+    correct: "b"
+  },
+  {
+    question: "Which disease is caused by *Clostridium botulinum*?",
+    a: "Tetanus",
+    b: "Botulism",
+    c: "Gangrene",
+    d: "Diphtheria",
+    correct: "b"
+  },
+  {
+    question: "Endotoxins are part of which bacterial structure?",
+    a: "Flagella",
+    b: "Capsule",
+    c: "Lipopolysaccharide (LPS) layer",
+    d: "Peptidoglycan",
+    correct: "c"
+  },
+  {
+    question: "Which process is used to destroy all microbial life?",
+    a: "Disinfection",
+    b: "Pasteurization",
+    c: "Sterilization",
+    d: "Sanitization",
+    correct: "c"
+  },
+  {
+    question: "Which of the following is a dimorphic fungus?",
+    a: "Candida albicans",
+    b: "Aspergillus niger",
+    c: "Penicillium notatum",
+    d: "Saccharomyces cerevisiae",
+    correct: "a"
+  },
+  {
+    question: "In which growth phase do bacteria multiply at their fastest rate?",
+    a: "Lag phase",
+    b: "Log phase",
+    c: "Stationary phase",
+    d: "Death phase",
+    correct: "b"
+  },
+  {
+    question: "Which of these microbes lacks a cell wall?",
+    a: "Mycobacterium tuberculosis",
+    b: "Streptococcus pneumoniae",
+    c: "Mycoplasma pneumoniae",
+    d: "Escherichia coli",
+    correct: "c"
+  },
+  {
+    question: "Which test is used to identify *Mycobacterium tuberculosis*?",
+    a: "Gram stain",
+    b: "Endospore stain",
+    c: "Acid-fast stain",
+    d: "Capsule stain",
+    correct: "c"
+  },
+  {
+    question: "Which virus causes infectious mononucleosis?",
+    a: "Cytomegalovirus",
+    b: "Epstein-Barr virus",
+    c: "Herpes simplex virus",
+    d: "Hepatitis B virus",
+    correct: "b"
+  },
+  {
+    question: "What is the role of catalase in bacteria?",
+    a: "Breaks down sugars",
+    b: "Protects against heat",
+    c: "Neutralizes hydrogen peroxide",
+    d: "Helps in protein synthesis",
+    correct: "c"
+  },
+  {
+    question: "Which bacteria exhibit swarming motility on agar?",
+    a: "Escherichia coli",
+    b: "Proteus species",
+    c: "Bacillus subtilis",
+    d: "Staphylococcus aureus",
+    correct: "b"
+  },
+  {
+    question: "Which of the following is a zoonotic disease?",
+    a: "Tuberculosis",
+    b: "Typhoid",
+    c: "Rabies",
+    d: "Tetanus",
+    correct: "c"
+  },
+  {
+    question: "The presence of what makes a bacterium acid-fast?",
+    a: "Peptidoglycan",
+    b: "Lipopolysaccharide",
+    c: "Mycolic acid",
+    d: "Teichoic acid",
+    correct: "c"
+  },
+  {
+    question: "Which term describes bacteria that prefer cold environments?",
+    a: "Thermophiles",
+    b: "Psychrophiles",
+    c: "Mesophiles",
+    d: "Halophiles",
+    correct: "b"
+  },
+  {
+    question: "Which of the following is a facultative anaerobe?",
+    a: "Clostridium tetani",
+    b: "Bacteroides fragilis",
+    c: "Escherichia coli",
+    d: "Mycobacterium leprae",
+    correct: "c"
+  },
+  {
+    question: "What is the mode of action of penicillin?",
+    a: "Inhibits protein synthesis",
+    b: "Destroys plasma membrane",
+    c: "Inhibits peptidoglycan synthesis",
+    d: "Blocks DNA replication",
+    correct: "c"
+  }
+];
+  
+  const question = document.querySelector("li:first-child");
+  const answers = document.querySelectorAll("li:not(:first-child)");
+  const next = document.querySelector(".nextBtn");
+  const score = document.querySelector(".score");
+  const correct = document.querySelector(".score span:first-child");
+  const wrong = document.querySelector(".score span:nth-child(2)");
+  const remaining = document.querySelector(".score span:last-child");
+
+  let index = 1;
+  let flag = false;
+  const scoreObj = {
+    correct:0,
+    wrong:0
+  };
+
+   answers.forEach(el=>{
+    el.onclick = ()=>{
+      console.log(flag);
+       if(index<=questions.length && !flag){
+       if(questions[index-1][questions[index-1].correct] === el.textContent){
+        scoreObj.correct++;
+        correct.textContent = `Correct: ${scoreObj.correct}`;
+        el.className = "correct";
+       }
+      else{
+      scoreObj.wrong++;
+       el.className = "incorrect";
+       wrong.textContent = `Wrong: ${scoreObj.wrong}`;
+       answers.forEach(el=>{
+       if(questions[index-1][questions[index-1].correct] === el.textContent)
+       el.className = "correct";
+       })
+      }
+       }
+       flag = true;
+       remaining.textContent = `Remaining questions: ${questions.length-index}`;
+       if (getComputedStyle(score).visibility === "hidden") {
+       score.style.visibility = "visible";
+       answers.forEach(el=>{
+       el.classList.add("disabled");
+       })
+       }
+       else
+        return;
+      }
+   })
+    next.onclick = ()=>{
+    if(index<questions.length){
+    question.textContent =index+1 + ". " + questions[index].question;
+    answers.forEach((answer, ind)=>{
+    answer.classList.remove("correct");
+    answer.classList.remove("incorrect");
+    answer.textContent = questions[index][Object.keys(questions[index])[ind+1]];
+    })
+    index++;
+    flag = false;
+        }
+    }
+    </script>
+</body>
+</html>
