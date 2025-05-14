@@ -363,7 +363,7 @@
        remaining.textContent = `Remaining questions: ${questions.length-index}`;
        if (getComputedStyle(score).visibility === "hidden") 
        score.style.visibility = "visible";
-       if(index === questions.length && Number(scoreObj.correct) - Number(scoreObj.wrong) === 5)
+       if(index === questions.length && Number(scoreObj.correct) - Number(scoreObj.wrong) >= 5)
        statement.style.visibility = "visible";
        else if(index === questions.length){
        statement.textContent = "موكوسه من يومك 😏";
