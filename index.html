@@ -85,6 +85,17 @@
             border-color: darkred;
             color: white;
         }
+        .statement{
+          width: 250px;
+          text-align: center;
+          background: darkslateblue;
+          color: lime;
+          font-weight: bold;
+          margin: 15px auto 0;
+          padding:10px 20px;
+          border-radius: 5px;
+          visibility: hidden;
+        }
     </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -107,6 +118,9 @@
         </ul>
         <button class="nextBtn">NEXT</button>
     </div>
+        <div class="statement">
+          <p>شاطرة يا بت 😊 يا بياضة</p>
+        </div>
     <script>
 
         const questions = [
@@ -319,7 +333,7 @@
   const correct = document.querySelector(".score span:first-child");
   const wrong = document.querySelector(".score span:nth-child(2)");
   const remaining = document.querySelector(".score span:last-child");
-
+  const statement = document.querySelector(".statement");
   let index = 1;
   let flag = false;
   const scoreObj = {
@@ -329,7 +343,6 @@
 
    answers.forEach(el=>{
     el.onclick = ()=>{
-      console.log(flag);
        if(index<=questions.length && !flag){
        if(questions[index-1][questions[index-1].correct] === el.textContent){
         scoreObj.correct++;
@@ -348,13 +361,14 @@
        }
        flag = true;
        remaining.textContent = `Remaining questions: ${questions.length-index}`;
-       if (getComputedStyle(score).visibility === "hidden") {
+       if (getComputedStyle(score).visibility === "hidden") 
        score.style.visibility = "visible";
-       answers.forEach(el=>{
-       el.classList.add("disabled");
-       })
+       if(index === questions.length && Number(scoreObj.correct) - Number(scoreObj.wrong) === 5)
+       statement.style.visibility = "visible";
+       else if(index === questions.length){
+       statement.textContent = "موكوسه من يومك 😏";
+       statement.style.visibility = "visible";
        }
-       else
         return;
       }
    })
